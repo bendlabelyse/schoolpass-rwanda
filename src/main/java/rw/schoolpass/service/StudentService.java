@@ -1,0 +1,10 @@
+package rw.schoolpass.service;
+import org.springframework.stereotype.Service; import org.springframework.web.multipart.MultipartFile; import rw.schoolpass.model.Student; import rw.schoolpass.repo.StudentRepository; import java.io.*; import java.nio.file.*; import java.util.*;
+@Service public class StudentService {
+ private final StudentRepository repo; private final Path uploadDir;
+ public StudentService(StudentRepository r, org.springframework.core.env.Environment env){repo=r; uploadDir=Paths.get(env.getProperty("schoolpass.upload-dir","./data/uploads")); try{Files.createDirectories(uploadDir);}catch(IOException e){throw new IllegalStateException("Cannot create upload directory",e);}}
+ public String savePhoto(MultipartFile file){ if(file==null||file.isEmpty()) return null; String ct=file.getContentType(); if(ct==null||!Set.of("image/jpeg","image/png","image/webp").contains(ct)) throw new IllegalArgumentException("Photo must be JPG, PNG or WEBP."); if(file.getSize()>5*1024*1024) throw new IllegalArgumentException("Photo must be 5 MB or smaller."); String ext=ct.equals("image/png")?".png":ct.equals("image/webp")?".webp":".jpg"; String name=UUID.randomUUID()+ext; try{Files.copy(file.getInputStream(),uploadDir.resolve(name),StandardCopyOption.REPLACE_EXISTING); return "/uploads/"+name;}catch(IOException e){throw new IllegalStateException("Photo upload failed",e);} }
+ public String newToken(){return "SP-"+UUID.randomUUID().toString().replace("-","").substring(0,24).toUpperCase();}
+ public String feeStatus(long required,long paid){ if(required>0 && paid>=required)return "FULLY PAID"; if(paid>0)return "PARTIALLY PAID"; return "UNPAID"; }
+ public void validateStream(String cls,String stream){ boolean senior=Set.of("S4","S5","S6").contains(cls); if(senior&&!Set.of("MCB","PCB","MCE").contains(stream)) throw new IllegalArgumentException("S4-S6 must use MCB, PCB or MCE."); if(!senior&&!stream.isBlank()) throw new IllegalArgumentException("S1-S3 do not use MCB/PCB/MCE streams."); }
+}

@@ -1,0 +1,25 @@
+# Included features
+
+- Responsive professional dashboard
+- Student registration and editing
+- Student CSV bulk import
+- Student photo upload with file type/size validation
+- S1–S6 classes
+- MCB/PCB/MCE streams for S4–S6
+- Secure random QR credential generation
+- Printable student card
+- Card replacement and old credential deactivation
+- Browser camera QR scanning
+- USB QR/manual credential scanning
+- Arrival-only attendance
+- Duplicate same-day arrival prevention
+- Attendance date history
+- Fee required/paid/balance/status
+- Uniform payment status
+- Finance/admin role restriction
+- School profile configuration
+- Administrative audit log
+- Privacy information page
+- Custom error page instead of the default Whitelabel page
+- H2 local database and PostgreSQL configuration
+- No sample student records

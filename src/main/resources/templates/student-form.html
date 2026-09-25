@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Student record • SchoolPass</title>
+
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <div th:replace="~{fragments/nav :: nav}"></div>
+
+    <main class="container narrow">
+
+        <!-- Page heading -->
+        <section class="page-head">
+            <div>
+                <div class="eyebrow">STUDENT RECORD</div>
+
+                <h1 th:text="${studentId == null ? 'Add student' : 'Edit student'}">
+                    Add student
+                </h1>
+
+                <p>
+                    Enter the school's official information.
+                    The system creates the secure card credential automatically.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- Student form -->
+        <form
+            class="panel form-panel"
+            th:action="${studentId == null ? '/students/new' : '/students/new?edit='+studentId}"
+            th:object="${studentForm}"
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            <!-- CSRF protection -->
+            <input
+                type="hidden"
+                th:name="${_csrf.parameterName}"
+                th:value="${_csrf.token}"
+            >
+
+
+            <!-- =========================
+                 IDENTITY
+                 ========================= -->
+            <div class="form-section">
+
+                <h3>Identity</h3>
+
+                <div class="form-grid">
+
+                    <!-- Student code -->
+                    <label>
+                        Student code *
+
+                        <input
+                            th:field="*{studentCode}"
+                            required
+                        >
+
+                        <small th:errors="*{studentCode}"></small>
+                    </label>
+
+
+                    <!-- Academic year -->
+                    <label>
+                        Academic year *
+
+                        <input
+                            th:field="*{academicYear}"
+                            required
+                        >
+
+                        <small th:errors="*{academicYear}"></small>
+                    </label>
+
+
+                    <!-- First name -->
+                    <label>
+                        First name *
+
+                        <input
+                            th:field="*{firstName}"
+                            required
+                        >
+
+                        <small th:errors="*{firstName}"></small>
+                    </label>
+
+
+                    <!-- Last name -->
+                    <label>
+                        Last name *
+
+                        <input
+                            th:field="*{lastName}"
+                            required
+                        >
+
+                        <small th:errors="*{lastName}"></small>
+                    </label>
+
+
+                    <!-- Class -->
+                    <label>
+                        Class *
+
+                        <select
+                            th:field="*{className}"
+                            id="className"
+                            required
+                        >
+
+                            <option value="">
+                                Select class
+                            </option>
+
+                            <option value="S1">
+                                S1
+                            </option>
+
+                            <option value="S2">
+                                S2
+                            </option>
+
+                            <option value="S3">
+                                S3
+                            </option>
+
+                            <option value="S4">
+                                S4
+                            </option>
+
+                            <option value="S5">
+                                S5
+                            </option>
+
+                            <option value="S6">
+                                S6
+                            </option>
+
+                        </select>
+                    </label>
+
+
+                    <!-- Stream -->
+                    <label id="streamWrap">
+
+                        Stream
+
+                        <select
+                            th:field="*{section}"
+                            id="section"
+                        >
+
+                            <option value="">
+                                No stream
+                            </option>
+
+                            <option value="MCB">
+                                MCB — Mathematics, Chemistry, Biology
+                            </option>
+
+                            <option value="PCB">
+                                PCB — Physics, Chemistry, Biology
+                            </option>
+
+                            <option value="MCE">
+                                MCE — Mathematics, Computer Science, Economics
+                            </option>
+
+                        </select>
+
+                        <small th:errors="*{section}"></small>
+
+                    </label>
+
+
+                    <!-- Student photo -->
+                    <label class="full">
+
+                        Student photo
+
+                        <input
+                            type="file"
+                            name="photo"
+                            accept="image/jpeg,image/png,image/webp"
+                        >
+
+                        <small>
+                            JPG, PNG or WEBP • max 5 MB
+                        </small>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 SCHOOL INFORMATION
+                 ========================= -->
+            <div class="form-section">
+
+                <h3>School</h3>
+
+                <div class="form-grid">
+
+                    <!-- School name -->
+                    <label>
+                        School name *
+
+                        <input
+                            th:field="*{schoolName}"
+                            required
+                        >
+                    </label>
+
+
+                    <!-- Principal name -->
+                    <label>
+                        Principal name *
+
+                        <input
+                            th:field="*{principalName}"
+                            required
+                        >
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 FINANCE
+                 ========================= -->
+            <div class="form-section">
+
+                <h3>Finance</h3>
+
+                <div class="form-grid">
+
+                    <!-- Fees required -->
+                    <label>
+                        School fees required (RWF)
+
+                        <input
+                            type="number"
+                            min="0"
+                            step="1"
+                            th:field="*{feeRequired}"
+                        >
+                    </label>
+
+
+                    <!-- Fees paid -->
+                    <label>
+                        School fees paid (RWF)
+
+                        <input
+                            type="number"
+                            min="0"
+                            step="1"
+                            th:field="*{feePaid}"
+                        >
+
+                        <small th:errors="*{feePaid}"></small>
+                    </label>
+
+
+                    <!-- Uniform payment -->
+                    <label>
+                        Uniform payment
+
+                        <select th:field="*{uniformStatus}">
+
+                            <option value="PAID">
+                                Paid
+                            </option>
+
+                            <option value="PARTIAL">
+                                Partial
+                            </option>
+
+                            <option value="UNPAID">
+                                Not paid
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 PRIVACY
+                 ========================= -->
+            <div class="privacy-note">
+
+                <b>Privacy &amp; access</b>
+
+                <span>
+                    Financial fields are restricted to authorized
+                    finance/admin users. The QR credential contains
+                    only an opaque identifier.
+                </span>
+
+            </div>
+
+
+            <!-- =========================
+                 FORM ACTIONS
+                 ========================= -->
+            <div class="form-actions">
+
+                <a
+                    class="secondary"
+                    th:href="@{/students}"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    class="primary"
+                    type="submit"
+                >
+                    Save student
+                </button>
+
+            </div>
+
+        </form>
+
+    </main>
+
+
+    <!-- =========================
+         CLASS / STREAM BEHAVIOR
+         ========================= -->
+    <script>
+
+        const classSelect = document.getElementById("className");
+        const streamSelect = document.getElementById("section");
+
+        function syncStream() {
+
+            const seniorClass = [
+                "S4",
+                "S5",
+                "S6"
+            ].includes(classSelect.value);
+
+            streamSelect.disabled = !seniorClass;
+
+            if (!seniorClass) {
+                streamSelect.value = "";
+            }
+        }
+
+        classSelect.addEventListener(
+            "change",
+            syncStream
+        );
+
+        syncStream();
+
+    </script>
+
+</body>
+
+</html>

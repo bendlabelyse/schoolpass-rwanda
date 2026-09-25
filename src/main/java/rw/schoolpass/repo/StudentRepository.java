@@ -1,0 +1,3 @@
+package rw.schoolpass.repo;
+import org.springframework.data.jpa.repository.JpaRepository; import rw.schoolpass.model.Student; import java.util.*;
+public interface StudentRepository extends JpaRepository<Student,Long>{ Optional<Student> findByCardTokenAndCardActiveTrue(String token); Optional<Student> findByStudentCodeAndAcademicYear(String code,String year); List<Student> findByAcademicYearOrderByLastNameAscFirstNameAsc(String year); List<Student> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrStudentCodeContainingIgnoreCase(String a,String b,String c); long countByFeeStatus(String status); }

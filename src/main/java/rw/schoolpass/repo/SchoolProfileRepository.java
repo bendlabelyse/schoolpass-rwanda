@@ -1,0 +1,1 @@
+package rw.schoolpass.repo; import org.springframework.data.jpa.repository.JpaRepository; import rw.schoolpass.model.SchoolProfile; public interface SchoolProfileRepository extends JpaRepository<SchoolProfile,Long>{}
